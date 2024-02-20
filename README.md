@@ -1,6 +1,5 @@
-# Project Title
+# Sigv4 to GCS XML API
 
-Sigv4 to GCS XML API
 
 ## Description
 
