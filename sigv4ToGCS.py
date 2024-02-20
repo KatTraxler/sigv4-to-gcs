@@ -52,12 +52,12 @@ access_key = args.access_key
 secret_key = args.secret_key
 content_type = "text/plain"
 content_length = 0
+x_goog_expires = 604800
 
 # Fetch current time to form credential scope
 t = datetime.datetime.utcnow()
 google_date = t.strftime('%Y%m%dT%H%M%SZ')
 date_stamp = t.strftime('%Y%m%d')
-
 
 # Location of GCS Bucket
 region = 'us-central1'
@@ -70,7 +70,7 @@ request_type = 'goog4_request'
 
 credential_scope = date_stamp + '/' + region + '/' + service + '/' + request_type
 
-signed_headers = 'content-length;content-type;host;x-goog-content-sha256;x-goog-date'
+signed_headers = 'content-length;content-type;host;x-goog-content-sha256;x-goog-date;x-goog-expires'
 
 
 def sign(key, msg):
@@ -86,7 +86,7 @@ def getSignatureKey(key, date_stamp, regionName, serviceName):
 
 # Construct the canonical request as a string.Canonical requests define the elements of a request that a user must include 
 canonical_uri = f'/{OBJECT_NAME}'
-canonical_headers = 'content-length:' + str(content_length) + '\n' + 'content-type:' + content_type + '\n' + 'host:' + host + '\n' + 'x-goog-content-sha256:UNSIGNED-PAYLOAD' + '\n' + 'x-goog-date:' + google_date
+canonical_headers = 'content-length:' + str(content_length) + '\n' + 'content-type:' + content_type + '\n' + 'host:' + host + '\n' + 'x-goog-content-sha256:UNSIGNED-PAYLOAD' + '\n' + 'x-goog-date:' + google_date + '\n' + 'x-goog-expires:' + str(x_goog_expires)
 canonical_request = method + '\n' + canonical_uri + '\n' + query_string + '\n' + canonical_headers + '\n\n' + signed_headers + '\n' + 'UNSIGNED-PAYLOAD'
 
 # Construct string-to-sign.
@@ -107,6 +107,6 @@ authorization_header = algorithm + ' ' + 'Credential=' + access_key + '/' + cred
 
 print("\nRun the following curl command to verify you can upload an object to the provided GCS bucket:")
 
-print("curl -v -X GET -H 'Content-Type: " + content_type + "' -H 'Content-length: " + str(content_length) + "' -H 'x-goog-date: " + google_date + "' -H 'x-goog-content-sha256: UNSIGNED-PAYLOAD' -H 'Authorization: " + authorization_header + "' https://" + host + canonical_uri + "?" + query_string)
+print("curl -v -X GET -H 'Content-Type: " + content_type + "' -H 'Content-length: " + str(content_length) + "' -H 'x-goog-date: " + google_date + "' -H 'x-goog-expires: " + str(x_goog_expires) + "' -H 'x-goog-content-sha256: UNSIGNED-PAYLOAD' -H 'Authorization: " + authorization_header + "' https://" + host + canonical_uri + "?" + query_string)
 
 
