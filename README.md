@@ -3,7 +3,7 @@
 
 ## Description
 
-A simple python script that creates signed headers for authenticating to the GCS XML APIs
+A simple python script that creates signed headers for authenticating to the GCS XML APIs. It takes in an access key, secret, object and bucket name and returns a curl request with a signed Authorization header which will retreive the GCS object.
 
 ## Getting Started
 
@@ -12,14 +12,18 @@ A simple python script that creates signed headers for authenticating to the GCS
 - Python 3
 - Curl
 
+### Requirements
+
+* Caller must have the `storage.objects.get` permission on the requested object.
+* Caller must supply an [HMAC key](https://cloud.google.com/storage/docs/authentication/hmackeys)
+
 
 ### Required command-line arguements
 
-* --access_key: The ID of the HMAC key used to authenticate to GCS XML API 
-* --secret_key: The HMAC key secret key used to authenticate to GCS XML API 
-* --OBJECT_NAME: The name of the object to upload to the bucket.
-* --bucket_name: The name of the GCS bucket to upload the object to.
-* --content_type: Type of object (i.e. text/plain or application/json)
+* --access_key: The ID of the HMAC key used to authenticate to GCS XML API .
+* --secret_key: The HMAC key secret key used to authenticate to GCS XML API. 
+* --OBJECT_NAME: The name of the object to retreive from the GCS bucket.
+* --bucket_name: The name of the GCS bucket to retreive the object from.
 
 ### Returned
 

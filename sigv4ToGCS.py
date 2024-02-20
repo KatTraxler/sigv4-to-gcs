@@ -22,25 +22,19 @@ parser.add_argument(
 )
 parser.add_argument(
     "--OBJECT_NAME",
-    help="Override Botocore config max_attempts (default 4)",
+    help="Name of the GCS object to retrieve",
     required=True,
     type=str,
     dest="OBJECT_NAME",
 )
 parser.add_argument(
     "--bucket_name",
-    help="Name of the bucket to upload an object to",
+    help="Name of the bucket to retreive an object from",
     required=True,
     type=str,
     dest="bucket_name",
 )
-parser.add_argument(
-    "--content_type",
-    help="content type of object being uploaded, i.e. 'text/plain' or 'application/json'",
-    required=True,
-    type=str,
-    dest="content_type",
-)
+
 
 args = parser.parse_args()
 
@@ -49,14 +43,14 @@ args = parser.parse_args()
 algorithm = 'GOOG4-HMAC-SHA256'
 BUCKET_NAME = args.bucket_name
 OBJECT_NAME = args.OBJECT_NAME
-method = 'POST'
+method = 'GET'
 
 query_string = 'uploads='
 host = f'{BUCKET_NAME}.storage.googleapis.com'
 
 access_key = args.access_key
 secret_key = args.secret_key
-content_type = args.content_type
+content_type = "text/plain"
 content_length = 0
 
 # Fetch current time to form credential scope
@@ -113,6 +107,6 @@ authorization_header = algorithm + ' ' + 'Credential=' + access_key + '/' + cred
 
 print("\nRun the following curl command to verify you can upload an object to the provided GCS bucket:")
 
-print("curl -v -X POST -d '' -H 'Content-Type: " + content_type + "' -H 'Content-length: " + str(content_length) + "' -H 'x-goog-date: " + google_date + "' -H 'x-goog-content-sha256: UNSIGNED-PAYLOAD' -H 'Authorization: " + authorization_header + "' https://" + host + canonical_uri + "?" + query_string)
+print("curl -v -X GET -H 'Content-Type: " + content_type + "' -H 'Content-length: " + str(content_length) + "' -H 'x-goog-date: " + google_date + "' -H 'x-goog-content-sha256: UNSIGNED-PAYLOAD' -H 'Authorization: " + authorization_header + "' https://" + host + canonical_uri + "?" + query_string)
 
 
