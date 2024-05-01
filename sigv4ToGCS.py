@@ -55,7 +55,7 @@ content_length = 0
 x_goog_expires = 604800
 
 # Fetch current time to form credential scope
-t = datetime.datetime.utcnow()
+t = datetime.datetime.now(datetime.UTC)
 google_date = t.strftime('%Y%m%dT%H%M%SZ')
 date_stamp = t.strftime('%Y%m%d')
 
@@ -105,7 +105,7 @@ authorization_header = algorithm + ' ' + 'Credential=' + access_key + '/' + cred
 ## Test the returned authorization header with curl by attempting to Post an object to the GCS bucket:
 ##############################################
 
-print("\nRun the following curl command to verify you can upload an object to the provided GCS bucket:")
+print("\nRun the following curl command to verify you can download the object from the GCS bucket:")
 
 print("curl -v -X GET -H 'Content-Type: " + content_type + "' -H 'Content-length: " + str(content_length) + "' -H 'x-goog-date: " + google_date + "' -H 'x-goog-expires: " + str(x_goog_expires) + "' -H 'x-goog-content-sha256: UNSIGNED-PAYLOAD' -H 'Authorization: " + authorization_header + "' https://" + host + canonical_uri + "?" + query_string)
 
