@@ -55,7 +55,7 @@ content_length = 0
 x_goog_expires = 604800
 
 # Fetch current time to form credential scope
-t = datetime.datetime.now(datetime.UTC)
+t = datetime.datetime.now(datetime.timezone.utc)
 google_date = t.strftime('%Y%m%dT%H%M%SZ')
 date_stamp = t.strftime('%Y%m%d')
 
